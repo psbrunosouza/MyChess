@@ -9,7 +9,7 @@
         public int Column { get; set; }
 
         /*
-         *  @Position2D -> Construtor da classe, define posicao X,Y
+         *  @ -> Construtor da classe, define posicao X,Y
          */
 
         public Position2D(int line, int column) {

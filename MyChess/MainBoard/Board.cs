@@ -42,22 +42,6 @@ namespace MainBoard {
             return PieceToRemove;
         }
 
-        /*
-         *  @MovePiece -> Move uma peca de posicao de uma posicao de origem para 
-         *  uma posicao destino no tabuleiro
-         */
-
-        public void MovePiece(Position2D from, Position2D to) {
-            
-            ChessPiece pieceRemoved = RemovePiece(from);
-
-            if (ValidatePosition(to)) {
-                InsertPiece(pieceRemoved, to);  
-            }
-            else {
-                throw new BoardException("Ja existe uma peça na posição de destino informada!");
-            }  
-        }
 
         /*
          *  @FindPiece -> Encontrar uma peca na posicao especificada
@@ -77,7 +61,7 @@ namespace MainBoard {
          *  @ValidatePosition -> Verifica se uma posicao do tabuleiro possui ou nao uma peca  
          */
 
-        private bool ValidatePosition(Position2D pos) {
+        public bool ValidatePosition(Position2D pos) {
             if (Pieces[pos.Line, pos.Column] == null) {
                 return true;
             }

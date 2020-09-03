@@ -4,22 +4,17 @@ using System;
 using Pieces.PieceColor;
 using MainBoard.BoardExceptions;
 using Interface;
+using MainMatch;
 
 namespace MyChess {
     class Program {
         static void Main(string[] args) {
 
             try {
-                
-                Board board = new Board(8, 8);
-                board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(1, 7));
-                board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(1, 4));
-                board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(1, 3));
-                board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(3, 7));
-                board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(4, 4));
-                board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(5, 6));
 
-                Screen.DisplayBoard(board);
+                Match match = new Match();
+
+                Screen.DisplayBoard(match.Board);
 
                 int line = int.Parse(Console.ReadLine());
                 int column = int.Parse(Console.ReadLine());
@@ -31,9 +26,9 @@ namespace MyChess {
 
                 Position2D to = new Position2D(line, column);
 
-                board.MovePiece(from, to);
+                match.MovePiece(from, to);
 
-                Screen.DisplayBoard(board);
+                Screen.DisplayBoard(match.Board);
 
               
                 
