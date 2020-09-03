@@ -1,5 +1,4 @@
 ﻿using Pieces;
-using System;
 using MainBoard.BoardExceptions;
 
 namespace MainBoard {
@@ -14,8 +13,9 @@ namespace MainBoard {
         public int Columns { get; set; }
         public ChessPiece[,] Pieces { get; set; }
 
-        public Board() {
-        }
+        /*
+         *  @Board -> Construtor da classe, Constroi um tabuleiro com estrutura de linhas e colunas (X, Y)
+         */
         public Board(int lines, int columns) {
             Lines = lines;
             Columns = columns;

@@ -8,6 +8,10 @@
         public int Line { get; set; }
         public int Column { get; set; }
 
+        /*
+         *  @Position2D -> Construtor da classe, define posicao X,Y
+         */
+
         public Position2D(int line, int column) {
             Line = line;
             Column = column;
