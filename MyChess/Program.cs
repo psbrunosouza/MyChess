@@ -18,8 +18,24 @@ namespace MyChess {
                 board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(3, 7));
                 board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(4, 4));
                 board.InsertPiece(new ChessPiece(Colors.Black), new Position2D(5, 6));
-                //board.RemovePiece(new Position2D(1, 7));             
+
                 Screen.DisplayBoard(board);
+
+                int line = int.Parse(Console.ReadLine());
+                int column = int.Parse(Console.ReadLine());
+
+                Position2D from = new Position2D(line, column);
+
+                line = int.Parse(Console.ReadLine());
+                column = int.Parse(Console.ReadLine());
+
+                Position2D to = new Position2D(line, column);
+
+                board.MovePiece(from, to);
+
+                Screen.DisplayBoard(board);
+
+              
                 
             }
             catch (BoardException e) {

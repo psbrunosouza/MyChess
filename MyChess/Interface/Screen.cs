@@ -19,11 +19,10 @@ namespace Interface {
 
             ChessPiece[,] pieces = board.Pieces;
 
-            for (int i = 0; i < 8; i++) {              
-                for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < board.Lines; i++) {              
+                for (int j = 0; j < board.Columns; j++) {
                     if (pieces[i, j] != null) {
-                        Console.Write(" " + pieces[i, j]);
-                        Console.Write(" ");
+                        Console.Write(" " + pieces[i, j] + " ");
                     }
                     else {
                         Console.Write(" - ");
@@ -32,5 +31,7 @@ namespace Interface {
                 Console.WriteLine();
             }
         }
+
+        
     }
 }
