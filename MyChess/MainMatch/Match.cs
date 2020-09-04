@@ -2,8 +2,8 @@
 using MainBoard;
 using Pieces.PieceColor;
 using Pieces;
-using MainBoard;
 using MainBoard.BoardExceptions;
+using MyChess.MainBoard;
 
 namespace MainMatch {
     class Match {
@@ -14,6 +14,7 @@ namespace MainMatch {
         public Colors CurrentPlayer { get; private set; }
         public int Turn { get; private set; }
         public Board Board { get; private set; }
+        public bool MatchFinished { get; private set; }
 
 
         /*
@@ -24,8 +25,9 @@ namespace MainMatch {
         public Match() {
             CurrentPlayer = Colors.White;
             Turn = 0;
+            MatchFinished = false;
             Board = new Board(8, 8);
-            InsertPiece();
+            InitializePieces();
         }
 
         /*
@@ -47,11 +49,20 @@ namespace MainMatch {
         }
 
         /*
-         *  @InsertPiece -> Insere uma nova peca no tabuleiro
+         *  @InsertNewPiece -> Funcao de suporte para facilitar a insercao de novas pecas no tabuleiro
+         *   a partir da partida atual
          */
 
-        public void InsertPiece() {
-            Board.InsertPiece(new ChessPiece(Colors.White), new Position2D(0, 0));
+        public void InsertPiece(ChessPiece piece, ChessPosition pos) {
+            Board.InsertPiece(piece, pos.ToChessPosition());
+        }
+
+        /*
+         *  @InsertPieces -> Insere as pecas no tabuleiro para o inicio da partida
+         */
+
+        public void InitializePieces() {
+            InsertPiece(new ChessPiece(Colors.White), new ChessPosition('c', 1));
         }
     }
 }

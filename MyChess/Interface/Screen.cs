@@ -1,4 +1,6 @@
 ﻿using MainBoard;
+using MainMatch;
+using MyChess.MainBoard;
 using Pieces;
 using System;
 
@@ -19,8 +21,10 @@ namespace Interface {
 
             ChessPiece[,] pieces = board.Pieces;
 
-            for (int i = 0; i < board.Lines; i++) {              
+            for (int i = 0; i < board.Lines; i++) {
+                Console.Write(8 - i + " ");
                 for (int j = 0; j < board.Columns; j++) {
+                    
                     if (pieces[i, j] != null) {
                         Console.Write(" " + pieces[i, j] + " ");
                     }
@@ -30,8 +34,17 @@ namespace Interface {
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine("   a  b  c  d  e  f  g  h");
         }
 
-        
+        /*
+         *  @ChessMove -> Funcao de suporte para a inserir as pecas de acordo com o padrao alfanumerico 
+         *  do xadrez a/h e 1/8
+         */
+
+        static public Position2D ChessMove() {
+            string pos = Console.ReadLine();
+            return new ChessPosition(pos[0], int.Parse(pos[1] + "")).ToChessPosition();
+        }
     }
 }

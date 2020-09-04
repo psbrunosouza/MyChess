@@ -1,7 +1,5 @@
 ﻿using MainBoard;
-using Pieces;
 using System;
-using Pieces.PieceColor;
 using MainBoard.BoardExceptions;
 using Interface;
 using MainMatch;
@@ -12,32 +10,28 @@ namespace MyChess {
 
             try {
 
+                // Inicializa uma partida
                 Match match = new Match();
 
-                Screen.DisplayBoard(match.Board);
+                while (match.MatchFinished != true) {
 
-                int line = int.Parse(Console.ReadLine());
-                int column = int.Parse(Console.ReadLine());
+                    // Exibe o tabuleiro
+                    Console.Clear();
+                    Screen.DisplayBoard(match.Board);
 
-                Position2D from = new Position2D(line, column);
+                    // Solicita ao jogador a posicao
+                    // de origem e destino para mover a peca
+                    Console.Write("Origem: ");
+                    Position2D from = Screen.ChessMove();
+                    Console.Write("Destino: ");
+                    Position2D to = Screen.ChessMove();
 
-                line = int.Parse(Console.ReadLine());
-                column = int.Parse(Console.ReadLine());
-
-                Position2D to = new Position2D(line, column);
-
-                match.MovePiece(from, to);
-
-                Screen.DisplayBoard(match.Board);
-
-              
-                
-            }
-            catch (BoardException e) {
+                    //realiza o movimento da peca
+                    match.MovePiece(from, to);
+                }             
+            }catch (BoardException e) {
                 Console.WriteLine(e.Message);
-            }
-
-            
+            }           
         }
     }
 }
