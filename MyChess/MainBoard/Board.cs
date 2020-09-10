@@ -50,10 +50,12 @@ namespace MainBoard {
         private ChessPiece FindPiece(Position2D pos) {
 
             if (Pieces[pos.Line, pos.Column] == null) {
-                throw new BoardException("Não foi localizado peça na posição informada");
+                return null;
             }
 
             ChessPiece PieceToFind = Pieces[pos.Line, pos.Column];
+            Pieces[pos.Line, pos.Column].Position = null;
+            Pieces[pos.Line, pos.Column] = null;
             return PieceToFind;
         }
 
@@ -62,11 +64,24 @@ namespace MainBoard {
          */
 
         public bool ValidatePosition(Position2D pos) {
-            if (Pieces[pos.Line, pos.Column] == null) {
-                return true;
+            if (pos.Line < 0 || pos.Line >= Lines || pos.Column < 0 || pos.Column >= Columns) {
+                return false;
             }
             else {
-                return false;
+                return true;
+            }
+        }
+
+        /*
+         *  @GetPiece -> Captura uma peca baseado em uma posicao do tabuleiro
+         */
+        public ChessPiece GetPiece(Position2D pos) {
+            ChessPiece p = Pieces[pos.Line, pos.Column];
+            if (p == null) {
+                return null;
+            }
+            else {
+                return p;
             }
         }
 

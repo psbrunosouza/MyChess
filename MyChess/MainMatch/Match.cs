@@ -37,15 +37,10 @@ namespace MainMatch {
 
         public void MovePiece(Position2D from, Position2D to) {
 
-            ChessPiece pieceRemoved = Board.RemovePiece(from);
-
-            if (Board.ValidatePosition(to)) {
-                Board.InsertPiece(pieceRemoved, to);
-            }
-            else {
-                throw new BoardException("Ja existe uma peça na posição de destino informada!");
-            }
-
+            ChessPiece CurrentPiece = Board.RemovePiece(from);
+            ChessPiece CapturedPiece = Board.RemovePiece(to);
+            CurrentPiece.IncrementTotalMoves();
+            Board.InsertPiece(CurrentPiece, to);
         }
 
         /*
@@ -62,7 +57,8 @@ namespace MainMatch {
          */
 
         public void InitializePieces() {
-            InsertPiece(new ChessPiece(Colors.White), new ChessPosition('c', 1));
+            InsertPiece(new King(Colors.White, Board), new ChessPosition('c', 1));
+            InsertPiece(new King(Colors.Black, Board), new ChessPosition('e', 4));
         }
     }
 }
