@@ -1,5 +1,7 @@
 ﻿using Pieces.PieceColor;
 using MainBoard;
+using Microsoft.VisualBasic;
+using MainBoard.BoardExceptions;
 
 namespace Pieces {
     abstract class ChessPiece {
@@ -47,6 +49,34 @@ namespace Pieces {
         public bool CanMove(Position2D pos) {
             ChessPiece p = Board.GetPiece(pos);
             return p == null || p.Color != this.Color;
+        }
+
+        /*
+         *  @ExistMovements -> Verifica se existe pelo menos um movimento possivel para uma peca
+         */
+
+        public bool ExistMoviments() {
+
+            bool[,] mat = PieceMoves();
+
+            for (int i = 0; i < Board.Lines; i++) {
+                for (int j = 0; j < Board.Columns; j++) {
+                    if (mat[i, j]) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /*
+         *  @CanMoveTo -> Verifica se a peca pode realizar o movimento levando 
+         *  em conta a posicao de destino dela
+         */
+
+        public bool CanMoveTo(Position2D pos) {
+            return PieceMoves()[pos.Line, pos.Column];
         }
 
         /*

@@ -76,8 +76,8 @@ namespace Pieces {
         }
 
         /*
-        *  Retorna o tipo da peca de xadrez
-        */
+         *  Retorna o tipo da peca de xadrez
+         */
 
         public override string ToString() {
             return "K";
