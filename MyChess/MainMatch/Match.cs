@@ -191,7 +191,7 @@ namespace MainMatch {
          */
 
         public void ValidateEndPosition(Position2D from, Position2D to) {
-            if (!Board.GetPiece(from).CanMoveTo(to)) {
+            if (!Board.GetPiece(from).PossibleMovements(to)) {
                 throw new BoardException("A posição de destino selecionada não é valida!");
             }
         }

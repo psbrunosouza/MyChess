@@ -75,7 +75,7 @@ namespace Pieces {
          *  em conta a posicao de destino dela
          */
 
-        public bool CanMoveTo(Position2D pos) {
+        public bool PossibleMovements(Position2D pos) {
             return PieceMoves()[pos.Line, pos.Column];
         }
 
