@@ -55,7 +55,7 @@ namespace Interface {
                     }
 
                     PieceToColor(board.Pieces[i, j]);
-
+                    Console.BackgroundColor = lastBackground;
                 }
                 Console.WriteLine();
             }
@@ -110,6 +110,9 @@ namespace Interface {
             Console.WriteLine();
             Console.WriteLine("Turno(s): " + match.Turn);
             Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+            if (match.Xeque == true) {
+                Console.WriteLine("XEQUE!");
+            }           
         }
 
         /*

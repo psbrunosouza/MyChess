@@ -5,6 +5,7 @@ using Pieces;
 using MainBoard.BoardExceptions;
 using MyChess.MainBoard;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MainMatch {
     class Match {
@@ -18,6 +19,7 @@ namespace MainMatch {
         public bool MatchFinished { get; private set; }
         private HashSet<ChessPiece> Pieces;
         private HashSet<ChessPiece> CapturedPieces;
+        public bool Xeque { get; private set; }
 
 
         /*
@@ -32,6 +34,7 @@ namespace MainMatch {
             Board = new Board(8, 8);
             Pieces = new HashSet<ChessPiece>();
             CapturedPieces = new HashSet<ChessPiece>();
+            Xeque = false;
             InitializePieces();
         }
 
@@ -40,7 +43,7 @@ namespace MainMatch {
          *  uma posicao destino no tabuleiro
          */
 
-        public void MovePiece(Position2D from, Position2D to) {
+        public ChessPiece MovePiece(Position2D from, Position2D to) {
 
             ChessPiece currentPiece = Board.RemovePiece(from);
             currentPiece.IncrementTotalMoves();
@@ -50,6 +53,8 @@ namespace MainMatch {
             if(capturedPiece != null) {
                 CapturedPieces.Add(capturedPiece);
             }
+
+            return capturedPiece;
         }
 
         /*
@@ -58,10 +63,37 @@ namespace MainMatch {
          */
 
         public void RealizeMove(Position2D from, Position2D to) {
-            MovePiece(from, to);
+            ChessPiece capturedPiece = MovePiece(from, to);
+            
+            if (IsXeque(CurrentPlayer)) {
+                UndoMove(from, to, capturedPiece);
+                throw new BoardException("Você não pode se colocar em XEQUE!");
+            }
+
+            if (IsXeque(Enemy(CurrentPlayer))){
+                Xeque = true;
+            }
+            else {
+                Xeque = false;
+            }
+
             Turn++;
             ChangePlayer(CurrentPlayer);
 
+        }
+
+        /*
+        *  @UndoMove -> Desfaz a jogada realizada por uma peca
+        *  
+        */
+
+        public void UndoMove(Position2D from, Position2D to, ChessPiece capturedPiece) {
+            ChessPiece p = Board.RemovePiece(to);
+            p.DecrementTotalMoves();
+            if (capturedPiece != null) {
+                Board.InsertPiece(capturedPiece, to);
+                CapturedPieces.Remove(capturedPiece);
+            }
         }
 
         /*
@@ -125,7 +157,9 @@ namespace MainMatch {
          */
 
         public void InitializePieces() {
-            InsertNewPiece('c', 1, new King(Colors.White, Board));
+            InsertNewPiece('e', 1, new King(Colors.White, Board));
+            InsertNewPiece('e', 2, new Tower(Colors.White, Board));
+            InsertNewPiece('c', 7, new Tower(Colors.Black, Board));
             InsertNewPiece('c', 8, new King(Colors.Black, Board));
         }
 
@@ -155,6 +189,55 @@ namespace MainMatch {
             if (!Board.GetPiece(from).CanMoveTo(to)) {
                 throw new BoardException("A posição de destino selecionada não é valida!");
             }
+        }
+
+
+        /*
+         *  @Enemy -> Funcao para encontrar o adversario de uma dada peca
+         */
+
+        private Colors Enemy(Colors color) {
+            if(color == Colors.White) {
+                return Colors.Black;
+            }
+            else{
+                return Colors.White;
+            }
+        }
+
+        /*
+        *  @King -> Funcao usada para identificar o rei de uma dada cor
+        */
+
+        private ChessPiece King(Colors color) {
+            foreach (ChessPiece x in GetAllPieces(color)) {
+                if (x is King) {
+                    return x;
+                }
+            }
+
+            return null;
+        }
+
+        /*
+        *  @IsXeque -> Funcao usada para testar se um dado rei de uma cor especifica
+        *  esta em xeque
+        */
+
+        private bool IsXeque(Colors color) {
+            ChessPiece king = King(color);
+            if (king == null) {
+                throw new BoardException("Nao existe a peca KING no tabuleiro!");
+            }
+
+            foreach (ChessPiece x in GetAllPieces(Enemy(color))) {
+                bool[,] mat = x.PieceMoves();
+                if (mat[king.Position.Line, king.Position.Column]) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
