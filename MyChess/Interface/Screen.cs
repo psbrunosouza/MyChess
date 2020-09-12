@@ -4,6 +4,7 @@ using MyChess.MainBoard;
 using Pieces;
 using Pieces.PieceColor;
 using System;
+using System.Collections.Generic;
 
 namespace Interface {
     class Screen {
@@ -96,6 +97,43 @@ namespace Interface {
         static public Position2D ChessMove() {
             string pos = Console.ReadLine();
             return new ChessPosition(pos[0], int.Parse(pos[1] + "")).ToChessPosition();
+        }
+
+        /*
+         *  @DisplayMatch -> Imprime as informações da partida atual
+         */
+
+        static public void DisplayMatch(Match match) {
+            DisplayBoard(match.Board);
+            Console.WriteLine();
+            DisplayCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Turno(s): " + match.Turn);
+            Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+        }
+
+        /*
+        *  @DisplayCapturedPieces -> Exibe as peças capturadas pretas e brancas
+        */
+        static public void DisplayCapturedPieces(Match match) {
+            Console.WriteLine("Peças capturadas: ");
+            Console.Write("Brancas: ");
+            DisplayCapturedSet(match.GetCapturedPieces(Colors.White));
+            Console.Write("Pretas: ");
+            DisplayCapturedSet(match.GetCapturedPieces(Colors.Black));
+
+        }
+
+        /*
+        *  @DisplayCapturedSet -> Retorna o conjunto de peças capturadas
+        */
+
+        static public void DisplayCapturedSet(HashSet<ChessPiece> setOfPieces) {
+            Console.Write("[");
+            foreach (ChessPiece x in setOfPieces) {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
         }
     }
 }

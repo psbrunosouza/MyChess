@@ -16,10 +16,7 @@ namespace MyChess {
 
                 // Exibe o tabuleiro
                 Console.Clear();
-                Screen.DisplayBoard(match.Board);
-                Console.WriteLine();
-                Console.WriteLine("Turno(s): " + match.Turn);
-                Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+                Screen.DisplayMatch(match);
 
                 try {
                     // Solicita ao jogador a posicao

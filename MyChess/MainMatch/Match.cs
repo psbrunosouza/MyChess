@@ -4,6 +4,7 @@ using Pieces.PieceColor;
 using Pieces;
 using MainBoard.BoardExceptions;
 using MyChess.MainBoard;
+using System.Collections.Generic;
 
 namespace MainMatch {
     class Match {
@@ -15,6 +16,8 @@ namespace MainMatch {
         public int Turn { get; private set; }
         public Board Board { get; private set; }
         public bool MatchFinished { get; private set; }
+        private HashSet<ChessPiece> Pieces;
+        private HashSet<ChessPiece> CapturedPieces;
 
 
         /*
@@ -27,6 +30,8 @@ namespace MainMatch {
             Turn = 1;
             MatchFinished = false;
             Board = new Board(8, 8);
+            Pieces = new HashSet<ChessPiece>();
+            CapturedPieces = new HashSet<ChessPiece>();
             InitializePieces();
         }
 
@@ -37,10 +42,14 @@ namespace MainMatch {
 
         public void MovePiece(Position2D from, Position2D to) {
 
-            ChessPiece CurrentPiece = Board.RemovePiece(from);
-            ChessPiece CapturedPiece = Board.RemovePiece(to);
-            CurrentPiece.IncrementTotalMoves();
-            Board.InsertPiece(CurrentPiece, to);
+            ChessPiece currentPiece = Board.RemovePiece(from);
+            currentPiece.IncrementTotalMoves();
+            ChessPiece capturedPiece = Board.RemovePiece(to);    
+            Board.InsertPiece(currentPiece, to);
+
+            if(capturedPiece != null) {
+                CapturedPieces.Add(capturedPiece);
+            }
         }
 
         /*
@@ -52,6 +61,7 @@ namespace MainMatch {
             MovePiece(from, to);
             Turn++;
             ChangePlayer(CurrentPlayer);
+
         }
 
         /*
@@ -68,33 +78,55 @@ namespace MainMatch {
         }
 
         /*
+         * @GetCapturedPieces -> Classe que retorna todas as pecas capturadas atraves de uma cor
+         */
+
+        public HashSet<ChessPiece> GetCapturedPieces(Colors color) {
+            HashSet<ChessPiece> aux = new HashSet<ChessPiece>();
+            
+            foreach (ChessPiece x in CapturedPieces) {
+                if (x.Color == color) {
+                    aux.Add(x);
+                }
+            }
+            return aux;
+        }
+
+        /*
+         * @GetAllPieces -> Classe que retorna todas as pecas em jogo, exceto as pecas capturadas
+         */
+
+        public HashSet<ChessPiece> GetAllPieces(Colors color) {
+            HashSet<ChessPiece> aux = new HashSet<ChessPiece>();
+
+            foreach (ChessPiece x in Pieces) {
+                if (x.Color == color) {
+                    aux.Add(x);
+                }
+            }
+            aux.ExceptWith(GetCapturedPieces(color));
+            return aux;        
+        }
+
+
+        /*
          *  @InsertNewPiece -> Funcao de suporte para facilitar a insercao de novas pecas no tabuleiro
          *   a partir da partida atual
          */
 
-        public void InsertPiece(ChessPiece piece, ChessPosition pos) {
-            Board.InsertPiece(piece, pos.ToChessPosition());
+        public void InsertNewPiece(char column, int line, ChessPiece piece) {
+            Board.InsertPiece(piece, new ChessPosition(column, line).ToChessPosition());
+            Pieces.Add(piece);
         }
+
 
         /*
          *  @InsertPieces -> Insere as pecas no tabuleiro para o inicio da partida
          */
 
         public void InitializePieces() {
-            InsertPiece(new King(Colors.White, Board), new ChessPosition('d', 1));
-            InsertPiece(new Tower(Colors.White, Board), new ChessPosition('c', 1));
-            InsertPiece(new Tower(Colors.White, Board), new ChessPosition('e', 1));
-            InsertPiece(new Tower(Colors.White, Board), new ChessPosition('c', 2));
-            InsertPiece(new Tower(Colors.White, Board), new ChessPosition('e', 2));
-            InsertPiece(new Tower(Colors.White, Board), new ChessPosition('d', 2));
-
-
-            InsertPiece(new King(Colors.Black, Board), new ChessPosition('d', 8));
-            InsertPiece(new Tower(Colors.Black, Board), new ChessPosition('c', 8));
-            InsertPiece(new Tower(Colors.Black, Board), new ChessPosition('e', 8));
-            InsertPiece(new Tower(Colors.Black, Board), new ChessPosition('c', 7));
-            InsertPiece(new Tower(Colors.Black, Board), new ChessPosition('e', 7));
-            InsertPiece(new Tower(Colors.Black, Board), new ChessPosition('d', 7));
+            InsertNewPiece('c', 1, new King(Colors.White, Board));
+            InsertNewPiece('c', 8, new King(Colors.Black, Board));
         }
 
         /*
