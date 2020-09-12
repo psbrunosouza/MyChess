@@ -45,6 +45,10 @@ namespace MyChess {
                 }
 
             }
+
+            //Ultima exibicao informando XEQUE-MATE e jogaor vencedor
+            Console.Clear();
+            Screen.DisplayMatch(match);
         }
     }
 }

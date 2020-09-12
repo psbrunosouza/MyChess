@@ -72,14 +72,16 @@ namespace MainMatch {
 
             if (IsXeque(Enemy(CurrentPlayer))){
                 Xeque = true;
-            }
-            else {
+            }else {
                 Xeque = false;
             }
 
-            Turn++;
-            ChangePlayer(CurrentPlayer);
-
+            if (IsXequeMate(Enemy(CurrentPlayer))) {
+                MatchFinished = true;
+            }else {
+                Turn++;
+                ChangePlayer(CurrentPlayer);
+            }        
         }
 
         /*
@@ -94,6 +96,8 @@ namespace MainMatch {
                 Board.InsertPiece(capturedPiece, to);
                 CapturedPieces.Remove(capturedPiece);
             }
+
+            Board.InsertPiece(p, from);
         }
 
         /*
@@ -157,10 +161,11 @@ namespace MainMatch {
          */
 
         public void InitializePieces() {
-            InsertNewPiece('e', 1, new King(Colors.White, Board));
-            InsertNewPiece('e', 2, new Tower(Colors.White, Board));
-            InsertNewPiece('c', 7, new Tower(Colors.Black, Board));
-            InsertNewPiece('c', 8, new King(Colors.Black, Board));
+            InsertNewPiece('h', 7, new Tower(Colors.White, Board));
+            InsertNewPiece('d', 1, new King(Colors.White, Board));
+            InsertNewPiece('c', 1, new Tower(Colors.White, Board));
+            InsertNewPiece('b', 8, new Tower(Colors.Black, Board));
+            InsertNewPiece('a', 8, new King(Colors.Black, Board));
         }
 
         /*
@@ -206,8 +211,8 @@ namespace MainMatch {
         }
 
         /*
-        *  @King -> Funcao usada para identificar o rei de uma dada cor
-        */
+         *  @King -> Funcao usada para identificar o rei de uma dada cor
+         */
 
         private ChessPiece King(Colors color) {
             foreach (ChessPiece x in GetAllPieces(color)) {
@@ -220,9 +225,9 @@ namespace MainMatch {
         }
 
         /*
-        *  @IsXeque -> Funcao usada para testar se um dado rei de uma cor especifica
-        *  esta em xeque
-        */
+         *  @IsXeque -> Funcao usada para testar se um dado rei de uma cor especifica
+         *  esta em xeque
+         */
 
         private bool IsXeque(Colors color) {
             ChessPiece king = King(color);
@@ -238,6 +243,36 @@ namespace MainMatch {
             }
 
             return false;
+        }
+
+        /*
+         *  @IsXequeMate -> Funcao usada para verificar se um rei sofreu xequemate
+         */
+
+        public bool IsXequeMate(Colors color) {
+            if (!IsXeque(color)) {
+                return false;
+            }
+
+            foreach (ChessPiece x in GetAllPieces(color)) {
+                bool[,] mat = x.PieceMoves();
+                for (int i = 0; i < Board.Lines; i++) {
+                    for (int j = 0; j < Board.Columns; j++) {
+                        if (mat[i,j]) {
+                            Position2D from = x.Position;
+                            Position2D to = new Position2D(i, j);
+                            ChessPiece capturedPiece = MovePiece(from, to);
+                            bool isXeque = IsXeque(color);
+                            UndoMove(from, to, capturedPiece);
+                            if (!isXeque) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

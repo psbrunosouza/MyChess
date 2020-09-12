@@ -5,6 +5,7 @@ using Pieces;
 using Pieces.PieceColor;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Interface {
     class Screen {
@@ -109,10 +110,18 @@ namespace Interface {
             DisplayCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turno(s): " + match.Turn);
-            Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
-            if (match.Xeque == true) {
-                Console.WriteLine("XEQUE!");
-            }           
+            
+            if (!match.MatchFinished) {
+                Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+                if (match.Xeque == true) {
+                    Console.WriteLine("XEQUE!");
+                }
+            }
+            else {
+                Console.WriteLine("XEQUE-MATE!");
+                Console.WriteLine("Vencedor: " + match.CurrentPlayer);
+            }
+                    
         }
 
         /*
