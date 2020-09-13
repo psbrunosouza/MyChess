@@ -3,12 +3,12 @@ using MainBoard;
 using Pieces.PieceColor;
 
 namespace Pieces {
-    class Tower : ChessPiece {
+    class Rook : ChessPiece {
 
         /*
          *  Classe TORRE
          */
-        public Tower(Colors color, Board board) : base(color, board) { }
+        public Rook(Colors color, Board board) : base(color, board) { }
 
         /*
          *  @PieceMoves -> Movimentos possiveis da peca
@@ -70,7 +70,7 @@ namespace Pieces {
          */
 
         public override string ToString() {
-            return "T";
+            return "R";
         }
     }
 }

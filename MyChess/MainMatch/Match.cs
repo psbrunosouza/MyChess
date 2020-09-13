@@ -6,6 +6,7 @@ using MainBoard.BoardExceptions;
 using MyChess.MainBoard;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using MyChess.Pieces;
 
 namespace MainMatch {
     class Match {
@@ -161,11 +162,42 @@ namespace MainMatch {
          */
 
         public void InitializePieces() {
-            InsertNewPiece('h', 7, new Tower(Colors.White, Board));
-            InsertNewPiece('d', 1, new King(Colors.White, Board));
-            InsertNewPiece('c', 1, new Tower(Colors.White, Board));
-            InsertNewPiece('b', 8, new Tower(Colors.Black, Board));
-            InsertNewPiece('a', 8, new King(Colors.Black, Board));
+
+            // INICIALIZA TODAS AS PECAS BRANCAS
+            InsertNewPiece('a', 1, new Rook(Colors.White, Board));
+            InsertNewPiece('b', 1, new Knight(Colors.White, Board));
+            InsertNewPiece('c', 1, new Bishop(Colors.White, Board));
+            InsertNewPiece('d', 1, new Queen(Colors.White, Board));
+            InsertNewPiece('e', 1, new King(Colors.White, Board));
+            InsertNewPiece('f', 1, new Bishop(Colors.White, Board));
+            InsertNewPiece('g', 1, new Knight(Colors.White, Board));
+            InsertNewPiece('h', 1, new Rook(Colors.White, Board));
+            InsertNewPiece('a', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('b', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('c', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('d', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('e', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('f', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('g', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('h', 2, new Pawn(Colors.White, Board));
+
+            // INICIALIZA TODAS AS PECAS PRETAS
+            InsertNewPiece('a', 8, new Rook(Colors.Black, Board));
+            InsertNewPiece('b', 8, new Knight(Colors.Black, Board));
+            InsertNewPiece('c', 8, new Bishop(Colors.Black, Board));
+            InsertNewPiece('d', 8, new Queen(Colors.Black, Board));
+            InsertNewPiece('e', 8, new King(Colors.Black, Board));
+            InsertNewPiece('f', 8, new Bishop(Colors.Black, Board));
+            InsertNewPiece('g', 8, new Knight(Colors.Black, Board));
+            InsertNewPiece('h', 8, new Rook(Colors.Black, Board));
+            InsertNewPiece('a', 7, new Pawn(Colors.Black, Board));
+            InsertNewPiece('b', 7, new Pawn(Colors.Black, Board));
+            InsertNewPiece('c', 7, new Pawn(Colors.Black, Board));
+            InsertNewPiece('d', 7, new Pawn(Colors.Black, Board));
+            InsertNewPiece('e', 7, new Pawn(Colors.Black, Board));
+            InsertNewPiece('f', 7, new Pawn(Colors.Black, Board));
+            InsertNewPiece('g', 7, new Pawn(Colors.Black, Board));
+            InsertNewPiece('h', 7, new Pawn(Colors.Black, Board));        
         }
 
         /*

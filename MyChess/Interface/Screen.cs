@@ -5,7 +5,6 @@ using Pieces;
 using Pieces.PieceColor;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Interface {
     class Screen {
@@ -21,9 +20,16 @@ namespace Interface {
          *  em linhas e colunas (X, Y)
          */
         static public void DisplayBoard(Board board) {
-     
+
+            ConsoleColor aux;
+
             for (int i = 0; i < board.Lines; i++) {
+                
+                aux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(8 - i + " ");
+                Console.ForegroundColor = aux;
+
                 for (int j = 0; j < board.Columns; j++) {
                 
                     PieceToColor(board.Pieces[i, j]);
@@ -31,7 +37,10 @@ namespace Interface {
                 }
                 Console.WriteLine();
             }
+            aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("   a  b  c  d  e  f  g  h");
+            Console.ForegroundColor = aux;
         }
 
         /*
@@ -43,9 +52,15 @@ namespace Interface {
 
             ConsoleColor lastBackground = Console.BackgroundColor;
             ConsoleColor newBackground = ConsoleColor.DarkGray;
+            ConsoleColor aux;
 
             for (int i = 0; i < board.Lines; i++) {
+                
+                aux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(8 - i + " ");
+                Console.ForegroundColor = aux;
+
                 for (int j = 0; j < board.Columns; j++) {                 
                     
                     if (possibleMovements[i, j]) {
@@ -60,7 +75,10 @@ namespace Interface {
                 }
                 Console.WriteLine();
             }
+            aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("   a  b  c  d  e  f  g  h");
+            Console.ForegroundColor = aux;
         }
 
         /*
@@ -97,7 +115,20 @@ namespace Interface {
 
         static public Position2D ChessMove() {
             string pos = Console.ReadLine();
-            return new ChessPosition(pos[0], int.Parse(pos[1] + "")).ToChessPosition();
+
+            char column = pos[0];
+            int line = int.Parse(pos[1] + "");        
+
+            if(pos.Length > 2) {
+                throw new Exception("Voce digitou mais do que dois digitos validos!");
+            }
+
+            /*if (column.GetType() != typeof(char) || line.GetType() != typeof(int)) {
+                throw new Exception("Digite uma posição válida!");
+            }*/
+            
+            return new ChessPosition(column, line).ToChessPosition();
+
         }
 
         /*
