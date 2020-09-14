@@ -7,6 +7,7 @@ using MyChess.MainBoard;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using MyChess.Pieces;
+using Microsoft.VisualBasic;
 
 namespace MainMatch {
     class Match {
@@ -18,11 +19,12 @@ namespace MainMatch {
         public int Turn { get; private set; }
         public Board Board { get; private set; }
         public bool MatchFinished { get; private set; }
+        public bool Xeque { get; private set; }
+        public ChessPiece IsEnPassant { get; private set; }
         private HashSet<ChessPiece> Pieces;
         private HashSet<ChessPiece> CapturedPieces;
-        public bool Xeque { get; private set; }
-
-
+        
+        
         /*
          * Construtor que inica a partida com estrutura base de uma partida de xadrez,
          *  tabuleiro (8,8), turno 0 e jogador atual
@@ -36,6 +38,7 @@ namespace MainMatch {
             Pieces = new HashSet<ChessPiece>();
             CapturedPieces = new HashSet<ChessPiece>();
             Xeque = false;
+            IsEnPassant = null;
             InitializePieces();
         }
 
@@ -78,6 +81,22 @@ namespace MainMatch {
 
             }
 
+            // EN PASSANT
+            if (currentPiece is Pawn) {
+                if (from.Column != to.Column && capturedPiece == null) {
+                    Position2D p;
+                    if (currentPiece.Color == Colors.White) {
+                        p = new Position2D(to.Line + 1, to.Column);
+                    }
+                    else {
+                        p = new Position2D(to.Line - 1, to.Column);
+                    }
+
+                    capturedPiece = Board.RemovePiece(p);
+                    CapturedPieces.Add(capturedPiece);
+                }
+            }
+
             return capturedPiece;
         }
 
@@ -105,7 +124,18 @@ namespace MainMatch {
             }else {
                 Turn++;
                 ChangePlayer(CurrentPlayer);
-            }        
+            }
+
+            // #JOGADAS ESPECIAIS -> 
+            // En Passant
+
+            ChessPiece p = Board.GetPiece(to);
+            if (p is Pawn && (to.Line == from.Line - 2 || to.Line == from.Line + 2)) {
+                IsEnPassant = p;
+            }
+            else {
+                IsEnPassant = null;
+            }
         }
 
         /*
@@ -127,7 +157,7 @@ namespace MainMatch {
                 Position2D startPosRook = new Position2D(from.Line, from.Column + 3);
                 Position2D endPosRook = new Position2D(from.Line, from.Column + 1);
 
-                ChessPiece rook = Board.GetPiece(endPosRook);
+                ChessPiece rook = Board.RemovePiece(endPosRook);
                 rook.DecrementTotalMoves();
                 Board.InsertPiece(rook, startPosRook);
 
@@ -138,10 +168,26 @@ namespace MainMatch {
                 Position2D startPosRook = new Position2D(from.Line, from.Column - 4);
                 Position2D endPosRook = new Position2D(from.Line, from.Column - 1);
 
-                ChessPiece rook = Board.GetPiece(endPosRook);
+                ChessPiece rook = Board.RemovePiece(endPosRook);
                 rook.DecrementTotalMoves();
                 Board.InsertPiece(rook, startPosRook);
 
+            }
+
+            // EN PASSANT
+            if (p is Pawn) {
+                if (from.Column != to.Column && capturedPiece == IsEnPassant) {
+                    ChessPiece pawn = Board.RemovePiece(to);
+                    Position2D pPos;
+                    if (p.Color == Colors.White) {
+                        pPos = new Position2D(3, to.Column);
+                    }
+                    else {
+                        pPos = new Position2D(4, to.Column);
+                    }
+
+                    Board.InsertPiece(pawn, pPos);
+                }
             }
 
             Board.InsertPiece(p, from);
@@ -218,14 +264,14 @@ namespace MainMatch {
             InsertNewPiece('f', 1, new Bishop(Colors.White, Board));
             InsertNewPiece('g', 1, new Knight(Colors.White, Board));
             InsertNewPiece('h', 1, new Rook(Colors.White, Board));
-            InsertNewPiece('a', 2, new Pawn(Colors.White, Board));
-            InsertNewPiece('b', 2, new Pawn(Colors.White, Board));
-            InsertNewPiece('c', 2, new Pawn(Colors.White, Board));
-            InsertNewPiece('d', 2, new Pawn(Colors.White, Board));
-            InsertNewPiece('e', 2, new Pawn(Colors.White, Board));
-            InsertNewPiece('f', 2, new Pawn(Colors.White, Board));
-            InsertNewPiece('g', 2, new Pawn(Colors.White, Board));
-            InsertNewPiece('h', 2, new Pawn(Colors.White, Board));
+            InsertNewPiece('a', 2, new Pawn(Colors.White, Board, this));
+            InsertNewPiece('b', 2, new Pawn(Colors.White, Board, this));
+            InsertNewPiece('c', 2, new Pawn(Colors.White, Board, this));
+            InsertNewPiece('d', 2, new Pawn(Colors.White, Board, this));
+            InsertNewPiece('e', 2, new Pawn(Colors.White, Board, this));
+            InsertNewPiece('f', 2, new Pawn(Colors.White, Board, this));
+            InsertNewPiece('g', 2, new Pawn(Colors.White, Board, this));
+            InsertNewPiece('h', 2, new Pawn(Colors.White, Board, this));
 
             // INICIALIZA TODAS AS PECAS PRETAS
             InsertNewPiece('a', 8, new Rook(Colors.Black, Board));
@@ -236,14 +282,14 @@ namespace MainMatch {
             InsertNewPiece('f', 8, new Bishop(Colors.Black, Board));
             InsertNewPiece('g', 8, new Knight(Colors.Black, Board));
             InsertNewPiece('h', 8, new Rook(Colors.Black, Board));
-            InsertNewPiece('a', 7, new Pawn(Colors.Black, Board));
-            InsertNewPiece('b', 7, new Pawn(Colors.Black, Board));
-            InsertNewPiece('c', 7, new Pawn(Colors.Black, Board));
-            InsertNewPiece('d', 7, new Pawn(Colors.Black, Board));
-            InsertNewPiece('e', 7, new Pawn(Colors.Black, Board));
-            InsertNewPiece('f', 7, new Pawn(Colors.Black, Board));
-            InsertNewPiece('g', 7, new Pawn(Colors.Black, Board));
-            InsertNewPiece('h', 7, new Pawn(Colors.Black, Board));        
+            InsertNewPiece('a', 7, new Pawn(Colors.Black, Board, this));
+            InsertNewPiece('b', 7, new Pawn(Colors.Black, Board, this));
+            InsertNewPiece('c', 7, new Pawn(Colors.Black, Board, this));
+            InsertNewPiece('d', 7, new Pawn(Colors.Black, Board, this));
+            InsertNewPiece('e', 7, new Pawn(Colors.Black, Board, this));
+            InsertNewPiece('f', 7, new Pawn(Colors.Black, Board, this));
+            InsertNewPiece('g', 7, new Pawn(Colors.Black, Board, this));
+            InsertNewPiece('h', 7, new Pawn(Colors.Black, Board, this));        
         }
 
         /*

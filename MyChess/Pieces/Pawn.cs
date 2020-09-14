@@ -1,4 +1,5 @@
 ﻿using MainBoard;
+using MainMatch;
 using Pieces;
 using Pieces.PieceColor;
 using System;
@@ -6,12 +7,16 @@ using System;
 
 namespace MyChess.Pieces {
     class Pawn : ChessPiece {
-        
+
+        private Match match;
+
         /*
          * Pawn -> Classe Peao
          */
 
-        public Pawn(Colors color, Board board) : base(color, board){}
+        public Pawn(Colors color, Board board, Match match) : base(color, board){
+            this.match = match;
+        }
 
         /*
          * @PieceMoves -> Movimentos possiveis da peca 
@@ -40,6 +45,22 @@ namespace MyChess.Pieces {
                 if (Board.ValidatePosition(pos) && HasEnemy(pos)) {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // #JOGADAS ESPECIAIS ->
+                // En Passant
+
+                if (Position.Line == 3) {
+                    
+                    Position2D left = new Position2D(Position.Line, Position.Column - 1);
+                    if (Board.ValidatePosition(left) && HasEnemy(left) && Board.GetPiece(left) == match.IsEnPassant) {
+                        mat[left.Line - 1, left.Column] = true;
+                    }
+
+                    Position2D right = new Position2D(Position.Line, Position.Column + 1);
+                    if (Board.ValidatePosition(right) && HasEnemy(right) && Board.GetPiece(right) == match.IsEnPassant) {
+                        mat[right.Line - 1, right.Column] = true;
+                    }
+                }
             }
             else {
                 pos.GetPosition(Position.Line + 1, Position.Column);
@@ -60,6 +81,22 @@ namespace MyChess.Pieces {
                 pos.GetPosition(Position.Line + 1, Position.Column + 1);
                 if (Board.ValidatePosition(pos) && HasEnemy(pos)) {
                     mat[pos.Line, pos.Column] = true;
+                }
+
+                // #JOGADAS ESPECIAIS ->
+                // En Passant
+
+                if (Position.Line == 4) {
+
+                    Position2D left = new Position2D(Position.Line, Position.Column - 1);
+                    if (Board.ValidatePosition(left) && HasEnemy(left) && Board.GetPiece(left) == match.IsEnPassant) {
+                        mat[left.Line + 1, left.Column] = true;
+                    }
+
+                    Position2D right = new Position2D(Position.Line, Position.Column + 1);
+                    if (Board.ValidatePosition(right) && HasEnemy(right) && Board.GetPiece(right) == match.IsEnPassant) {
+                        mat[right.Line + 1, right.Column] = true;
+                    }
                 }
             }
             
