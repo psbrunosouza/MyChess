@@ -21,14 +21,9 @@ namespace Interface {
          */
         static public void DisplayBoard(Board board) {
 
-            ConsoleColor aux;
-
             for (int i = 0; i < board.Lines; i++) {
-                
-                aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write(8 - i + " ");
-                Console.ForegroundColor = aux;
+         
+                Console.Write(8 - i + "  ");    
 
                 for (int j = 0; j < board.Columns; j++) {
                 
@@ -36,11 +31,9 @@ namespace Interface {
 
                 }
                 Console.WriteLine();
-            }
-            aux = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("   a  b  c  d  e  f  g  h");
-            Console.ForegroundColor = aux;
+            }       
+            Console.WriteLine();
+            Console.WriteLine("    a  b  c  d  e  f  g  h");        
         }
 
         /*
@@ -51,16 +44,12 @@ namespace Interface {
         static public void PossibleMovements(Board board, bool[,] possibleMovements) {       
 
             ConsoleColor lastBackground = Console.BackgroundColor;
-            ConsoleColor newBackground = ConsoleColor.DarkGray;
-            ConsoleColor aux;
+            ConsoleColor newBackground = ConsoleColor.Magenta;
 
             for (int i = 0; i < board.Lines; i++) {
+                       
+                Console.Write(8 - i + "  ");   
                 
-                aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write(8 - i + " ");
-                Console.ForegroundColor = aux;
-
                 for (int j = 0; j < board.Columns; j++) {                 
                     
                     if (possibleMovements[i, j]) {
@@ -75,10 +64,9 @@ namespace Interface {
                 }
                 Console.WriteLine();
             }
-            aux = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("   a  b  c  d  e  f  g  h");
-            Console.ForegroundColor = aux;
+          
+            Console.WriteLine();
+            Console.WriteLine("    a  b  c  d  e  f  g  h");
         }
 
         /*
@@ -87,20 +75,21 @@ namespace Interface {
 
         static public void PieceToColor(ChessPiece piece) {
 
-            ConsoleColor lastColor = Console.ForegroundColor;
-            ConsoleColor newColor = ConsoleColor.Red;
+            ConsoleColor lastColor = Console.ForegroundColor;           
 
             if (piece == null) {
-                Console.Write(" - ");
+                Console.Write(" X ");
             }
             else {
                 if (piece.Color == Colors.White) {
-                    Console.ForegroundColor = lastColor;
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.Write(" " + piece + " ");
 
-                }
-                else {
-                    Console.ForegroundColor = newColor;
+                }else if (piece.Color == Colors.Black) {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(" " + piece + " ");
+                }else{
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.Write(" " + piece + " ");
                 }
 
@@ -116,18 +105,7 @@ namespace Interface {
         static public Position2D ChessMove() {
             string pos = Console.ReadLine();
 
-            char column = pos[0];
-            int line = int.Parse(pos[1] + "");        
-
-            if(pos.Length > 2) {
-                throw new Exception("Voce digitou mais do que dois digitos validos!");
-            }
-
-            /*if (column.GetType() != typeof(char) || line.GetType() != typeof(int)) {
-                throw new Exception("Digite uma posição válida!");
-            }*/
-            
-            return new ChessPosition(column, line).ToChessPosition();
+            return new ChessPosition(pos[0], int.Parse(pos[1] + "")).ToChessPosition();
 
         }
 
@@ -135,22 +113,22 @@ namespace Interface {
          *  @DisplayMatch -> Imprime as informações da partida atual
          */
 
-        static public void DisplayMatch(Match match) {
+        static public void DisplayMatch(Match match) {          
             DisplayBoard(match.Board);
             Console.WriteLine();
             DisplayCapturedPieces(match);
             Console.WriteLine();
-            Console.WriteLine("Turno(s): " + match.Turn);
+            Console.WriteLine("    Turno(s) -> " + match.Turn);
             
             if (!match.MatchFinished) {
-                Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+                Console.WriteLine("    Jogador -> " + match.CurrentPlayer);
                 if (match.Xeque == true) {
-                    Console.WriteLine("XEQUE!");
+                    Console.WriteLine("    XEQUE!");
                 }
             }
             else {
-                Console.WriteLine("XEQUE-MATE!");
-                Console.WriteLine("Vencedor: " + match.CurrentPlayer);
+                Console.WriteLine("    XEQUE-MATE!");
+                Console.WriteLine("    VENCEDOR! -> " + match.CurrentPlayer);
             }
                     
         }
@@ -159,11 +137,15 @@ namespace Interface {
         *  @DisplayCapturedPieces -> Exibe as peças capturadas pretas e brancas
         */
         static public void DisplayCapturedPieces(Match match) {
-            Console.WriteLine("Peças capturadas: ");
-            Console.Write("Brancas: ");
+            Console.WriteLine("   - Peças capturadas -");
+            Console.WriteLine();
+            Console.Write("    Brancas -> ");
             DisplayCapturedSet(match.GetCapturedPieces(Colors.White));
-            Console.Write("Pretas: ");
+            Console.WriteLine();
+            Console.Write("    Pretas  -> ");
             DisplayCapturedSet(match.GetCapturedPieces(Colors.Black));
+            Console.WriteLine("");
+            Console.WriteLine("   ---------------------");
 
         }
 
@@ -172,11 +154,11 @@ namespace Interface {
         */
 
         static public void DisplayCapturedSet(HashSet<ChessPiece> setOfPieces) {
-            Console.Write("[");
+            //Console.Write("[");
             foreach (ChessPiece x in setOfPieces) {
                 Console.Write(x + " ");
             }
-            Console.Write("]");
+            //Console.Write("]");
         }
     }
 }

@@ -1,0 +1,13 @@
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\bin\Release\netcoreapp3.1\MyChess.exe
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\bin\Release\netcoreapp3.1\MyChess.deps.json
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\bin\Release\netcoreapp3.1\MyChess.runtimeconfig.json
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\bin\Release\netcoreapp3.1\MyChess.runtimeconfig.dev.json
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\bin\Release\netcoreapp3.1\MyChess.dll
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\bin\Release\netcoreapp3.1\MyChess.pdb
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\obj\Release\netcoreapp3.1\MyChess.csprojAssemblyReference.cache
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\obj\Release\netcoreapp3.1\MyChess.AssemblyInfoInputs.cache
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\obj\Release\netcoreapp3.1\MyChess.AssemblyInfo.cs
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\obj\Release\netcoreapp3.1\MyChess.csproj.CoreCompileInputs.cache
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\obj\Release\netcoreapp3.1\MyChess.dll
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\obj\Release\netcoreapp3.1\MyChess.pdb
+C:\Users\Bruno Pinheiro\Documents\WS-vs_2019\MyChess\MyChess\obj\Release\netcoreapp3.1\MyChess.genruntimeconfig.cache

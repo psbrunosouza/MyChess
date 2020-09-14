@@ -6,22 +6,21 @@ using MainMatch;
 
 namespace MyChess {
     class Program {
-        static void Main(string[] args) {
-
+        static void Main(string[] args) {      
 
             // Inicializa uma partida
-            Match match = new Match();
+            Match match = new Match();          
 
-            while (match.MatchFinished != true) {
-
+            while (match.MatchFinished != true) {             
                 // Exibe o tabuleiro
                 Console.Clear();
-                Screen.DisplayMatch(match);
+                Screen.DisplayMatch(match);            
 
                 try {
                     // Solicita ao jogador a posicao
                     // de origem e destino para mover a peca
-                    Console.Write("Origem: ");
+                    Console.WriteLine();
+                    Console.Write("    Origem -> ");
                     Position2D from = Screen.ChessMove();
                     // Realiza a validacao da posicao de origem
                     match.ValidateStartPosition(from);
@@ -31,7 +30,8 @@ namespace MyChess {
                     Console.Clear();
                     Screen.PossibleMovements(match.Board, match.Board.GetPiece(from).PieceMoves());
 
-                    Console.Write("Destino: ");
+                    Console.WriteLine();
+                    Console.Write("    Destino -> ");
                     Position2D to = Screen.ChessMove();
                     // Realiza a validacao da posicao de destino
                     match.ValidateEndPosition(from, to);

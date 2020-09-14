@@ -63,7 +63,7 @@ namespace Pieces {
         }
 
         public override string ToString() {
-            return "L";
+            return "N";
         }
     }
 }

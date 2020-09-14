@@ -55,6 +55,29 @@ namespace MainMatch {
                 CapturedPieces.Add(capturedPiece);
             }
 
+            // #JOGADASESPECIAIS ->
+            // ROQUE PEQUENO
+            if (currentPiece is King && to.Column == from.Column + 2) {
+                Position2D startPosRook = new Position2D(from.Line, from.Column + 3);
+                Position2D endPosRook = new Position2D(from.Line, from.Column + 1);
+
+                ChessPiece rook = Board.RemovePiece(startPosRook);
+                rook.IncrementTotalMoves();
+                Board.InsertPiece(rook, endPosRook);
+
+            }
+
+            // ROQUE GRANDE
+            if (currentPiece is King && to.Column == from.Column - 2) {
+                Position2D startPosRook = new Position2D(from.Line, from.Column - 4);
+                Position2D endPosRook = new Position2D(from.Line, from.Column - 1);
+
+                ChessPiece rook = Board.RemovePiece(startPosRook);
+                rook.IncrementTotalMoves();
+                Board.InsertPiece(rook, endPosRook);
+
+            }
+
             return capturedPiece;
         }
 
@@ -96,6 +119,29 @@ namespace MainMatch {
             if (capturedPiece != null) {
                 Board.InsertPiece(capturedPiece, to);
                 CapturedPieces.Remove(capturedPiece);
+            }
+
+            // #JOGADASESPECIAIS ->
+            // ROQUE PEQUENO
+            if (CapturedPieces is King && to.Column == from.Column + 2) {
+                Position2D startPosRook = new Position2D(from.Line, from.Column + 3);
+                Position2D endPosRook = new Position2D(from.Line, from.Column + 1);
+
+                ChessPiece rook = Board.GetPiece(endPosRook);
+                rook.DecrementTotalMoves();
+                Board.InsertPiece(rook, startPosRook);
+
+            }
+
+            // ROQUE GRANDE
+            if (CapturedPieces is King && to.Column == from.Column - 2) {
+                Position2D startPosRook = new Position2D(from.Line, from.Column - 4);
+                Position2D endPosRook = new Position2D(from.Line, from.Column - 1);
+
+                ChessPiece rook = Board.GetPiece(endPosRook);
+                rook.DecrementTotalMoves();
+                Board.InsertPiece(rook, startPosRook);
+
             }
 
             Board.InsertPiece(p, from);
@@ -168,7 +214,7 @@ namespace MainMatch {
             InsertNewPiece('b', 1, new Knight(Colors.White, Board));
             InsertNewPiece('c', 1, new Bishop(Colors.White, Board));
             InsertNewPiece('d', 1, new Queen(Colors.White, Board));
-            InsertNewPiece('e', 1, new King(Colors.White, Board));
+            InsertNewPiece('e', 1, new King(Colors.White, Board, this));
             InsertNewPiece('f', 1, new Bishop(Colors.White, Board));
             InsertNewPiece('g', 1, new Knight(Colors.White, Board));
             InsertNewPiece('h', 1, new Rook(Colors.White, Board));
@@ -186,7 +232,7 @@ namespace MainMatch {
             InsertNewPiece('b', 8, new Knight(Colors.Black, Board));
             InsertNewPiece('c', 8, new Bishop(Colors.Black, Board));
             InsertNewPiece('d', 8, new Queen(Colors.Black, Board));
-            InsertNewPiece('e', 8, new King(Colors.Black, Board));
+            InsertNewPiece('e', 8, new King(Colors.Black, Board, this));
             InsertNewPiece('f', 8, new Bishop(Colors.Black, Board));
             InsertNewPiece('g', 8, new Knight(Colors.Black, Board));
             InsertNewPiece('h', 8, new Rook(Colors.Black, Board));
