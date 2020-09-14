@@ -107,7 +107,21 @@ namespace MainMatch {
 
         public void RealizeMove(Position2D from, Position2D to) {
             ChessPiece capturedPiece = MovePiece(from, to);
-            
+
+            // #JOGADAS ESPECIAIS
+            ChessPiece p = Board.GetPiece(to);
+
+            //PROMOTE
+            if (p is Pawn) {
+                if ((p.Color == Colors.White && to.Line == 0) || (p.Color == Colors.Black && to.Line == 7)){
+                    p = Board.RemovePiece(to);
+                    Pieces.Remove(p);
+                    ChessPiece queen = new Queen(p.Color, Board);
+                    Board.InsertPiece(queen, to);
+                    Pieces.Add(queen);
+                }
+            }
+
             if (IsXeque(CurrentPlayer)) {
                 UndoMove(from, to, capturedPiece);
                 throw new BoardException("Você não pode se colocar em XEQUE!");
@@ -129,7 +143,7 @@ namespace MainMatch {
             // #JOGADAS ESPECIAIS -> 
             // En Passant
 
-            ChessPiece p = Board.GetPiece(to);
+           
             if (p is Pawn && (to.Line == from.Line - 2 || to.Line == from.Line + 2)) {
                 IsEnPassant = p;
             }
